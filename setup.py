@@ -4,6 +4,8 @@ from setuptools import setup
 
 requires = [
         'ipython',
+        'numpy',
+        'bitarray',
     ]
 
 setup(name='3d-forge',
