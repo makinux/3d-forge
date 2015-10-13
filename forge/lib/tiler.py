@@ -277,7 +277,7 @@ class QueueTiles:
         self.num = num
 
         self.hasLighting = int(tmsConfig.get('Extensions', 'lighting'))
-        self.hasWatermask == int(tmsConfig.get('Extensions', 'watermask'))
+        self.hasWatermask = int(tmsConfig.get('Extensions', 'watermask'))
 
     def __iter__(self):
         for i in range(0, self.num):
@@ -360,8 +360,8 @@ class TilerManager:
             messagecount = 0
             msg = ''
             for tile in tiles:
-                (bounds, tileXYZ, t0, dbConfigFile) = tile
-                if not msg:
+                (bounds, tileXYZ, t0, dbConfigFile, hasLighting, hasWatermask) = tile
+                if msg:
                     msg += ','
                 msg += ('%s,%s,%s' % (str(tileXYZ[0]), str(tileXYZ[1]), str(tileXYZ[2])))
                 tcount += 1
@@ -371,7 +371,7 @@ class TilerManager:
                     tcount = 0
                     msg = ''
                 totalcount = totalcount + 1
-            if not msg:
+            if msg:
                 messagecount += 1
                 writeSQSMessage(q, msg)
         except Exception as e:
