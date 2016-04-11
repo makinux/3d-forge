@@ -131,9 +131,9 @@ class TerrainTile:
 
         msg = 'Header: %s' % self.header
         msg += '\nVertexCount: %s' % len(self.u)
-        msg += '\nuVertex: %s' % self.u
-        msg += '\nvVertex: %s' % self.v
-        msg += '\nhVertex: %s' % self.h
+        #msg += '\nuVertex: %s' % self.u
+        #msg += '\nvVertex: %s' % self.v
+        #msg += '\nhVertex: %s' % self.h
         msg += '\nindexDataCount: %s' % len(self.indices)
         msg += '\nindexData: %s' % self.indices
         msg += '\nwestIndicesCount: %s' % len(self.westI)
@@ -145,8 +145,8 @@ class TerrainTile:
         msg += '\nnorthIndicesCount: %s' % len(self.northI)
         msg += '\nnorthIndices: %s' % self.northI
         # output coordinates
-        msg += '\nCoordinates in EPSG %s ----------------------------\n' % self.targetEPSG
-        msg += '\n%s' % self.getVerticesCoordinates(epsg=self.targetEPSG)
+        #msg += '\nCoordinates in EPSG %s ----------------------------\n' % self.targetEPSG
+        #msg += '\n%s' % self.getVerticesCoordinates(epsg=self.targetEPSG)
 
         msg += '\nNumber of triangles: %s' % (len(self.indices) / 3)
         return msg
@@ -538,6 +538,9 @@ class TerrainTile:
         quantizeLatIndices = lambda x: int(round((x - self._south) * bLat))
 
         deniv = self.header['maximumHeight'] - self.header['minimumHeight']
+        
+        #print MAX,self._east,self._west,self._north,self._south
+        #print deniv
         # In case a tile is completely flat
         if deniv == 0:
             quantizeHeightIndices = lambda x: 0

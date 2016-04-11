@@ -9,12 +9,13 @@ from forge.lib.geometry_processors import computeNormals
 
 class TerrainTopology(object):
 
-    def __init__(self, features=[], hasLighting=False):
+    def __init__(self, features=[], points=[], hasLighting=False):
 
         if not isinstance(features, list):
             raise TypeError('Please provide a list of GDAL features')
 
         self.features = features
+        self.points = points
         self.hasLighting = hasLighting
 
         self.vertices = []
@@ -55,9 +56,9 @@ class TerrainTopology(object):
         face = []
         for vertex in vertices:
             lookupKey = ','.join(
-                ["{:.14f}".format(vertex[0]),
-                 "{:.14f}".format(vertex[1]),
-                 "{:.14f}".format(vertex[2])]
+                ["{0:.14f}".format(vertex[0]),
+                 "{0:.14f}".format(vertex[1]),
+                 "{0:.14f}".format(vertex[2])]
             )
             faceIndex = self._lookupVertexIndex(lookupKey)
             if faceIndex is not None:
@@ -81,18 +82,26 @@ class TerrainTopology(object):
     Builds a terrain topology from a list of GDAL features.
     """
 
-    def fromGDALFeatures(self):
+    def fromGDALFeatures(self, altitudeAttribute=""):
         for feature in self.features:
             if not isinstance(feature, ogr.Feature):
                 raise TypeError('Only GDAL features are supported')
 
             geometry = feature.GetGeometryRef()
             dim = geometry.GetCoordinateDimension()
-            if dim != 3:
+            if dim != 3 and altitudeAttribute=="":
                 raise TypeError('A feature with a dimension of %s has been found.' % dim)
+            elif dim != 3 and altitudeAttribute!="":
+                geometry
 
             vertices = self._verticesFromGDALGeometry(geometry)
             self.addVertices(vertices)
+        self.create()
+        self.features = []
+
+    def fromGDALPoints(self):
+        for point in self.points:
+            self.addVertices(point)
         self.create()
         self.features = []
 

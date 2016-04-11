@@ -3,12 +3,12 @@
 from forge.terrain import TerrainTile
 from forge.lib.global_geodetic import GlobalGeodetic
 
-basename = '7_133_98'
+basename = '15_58391_23482'
 directory = '.tmp'
 extension = '.shp'
 
 # Read terrain file
-filePathSource = 'forge/data/quantized-mesh/%s.terrain' % basename
+filePathSource = '%s/%s.terrain' % (directory, basename)
 filePathTarget = '%s/%s%s' % (directory, basename, extension)
 ter = TerrainTile()
 
@@ -21,5 +21,5 @@ ter.fromFile(filePathSource, bounds[0], bounds[2], bounds[1], bounds[3])
 ter.toShapefile(filePathTarget)
 
 # In order to display swiss coordinates
-ter.computeVerticesCoordinates(epsg=21781)
-print ter
+#ter.computeVerticesCoordinates(epsg=4326)
+#print ter
